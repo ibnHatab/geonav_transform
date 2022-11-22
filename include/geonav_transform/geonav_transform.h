@@ -1,4 +1,4 @@
-/* 
+/*
 
 Copyright (c) 2017, Brian Bingham
 All rights reserved
@@ -28,6 +28,7 @@ along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/NavSatFix.h>
+#include <map_msgs/SetMapProjections.h>
 
 #include <tf2/LinearMath/Transform.h>
 #include <tf2_ros/static_transform_broadcaster.h>
@@ -92,6 +93,11 @@ class GeonavTransform
     //!
     void geoOdomCallback(const nav_msgs::OdometryConstPtr& msg);
 
+    //! @brief Callback for odom in geo frame
+    //! @param[in] msg The odometry message to process
+    //!
+    bool geoSetMapProjections(map_msgs::SetMapProjections::Request& req, map_msgs::SetMapProjections::Response& res);
+
     //! @brief Sends transform
     void broadcastTf(void);
 
@@ -134,7 +140,7 @@ class GeonavTransform
     tf2::Transform transform_utm2nav_;
     tf2::Transform transform_utm2nav_inverse_;
 
-  tf2::Transform transform_odom2nav_;
+	tf2::Transform transform_odom2nav_;
     tf2::Transform transform_odom2nav_inverse_;
 
     //! @brief Transform buffer for managing coordinate transforms
@@ -191,6 +197,7 @@ class GeonavTransform
     //! @brief Publisher of Geo Odometry relative to geo frame
     ros::Publisher geo_pub_;
 
+	ros::ServiceServer nav_sat_fix_service_;
 
 };
 
